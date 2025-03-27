@@ -1,10 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-interface IERC20 {
-    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
-}
-
 contract ItemizedBudget {
     
     event FundsReceived(address sender, uint256 amount);
@@ -32,10 +28,5 @@ contract ItemizedBudget {
         return address(this).balance;
     }
 
-    
-    function getTokenBalance(address _tokenAddress) external view returns (uint256) {
-        IERC20 token = IERC20(_tokenAddress);
-        return token.balanceOf(address(this));
-    }
 }
 
