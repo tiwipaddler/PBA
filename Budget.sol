@@ -18,8 +18,6 @@ contract ItemizedBudget {
 
     
     function receiveToken(address _tokenAddress, uint256 _amount) external {
-        IERC20 token = IERC20(_tokenAddress);
-        require(token.transferFrom(msg.sender, address(this), _amount), "Token transfer failed");
         emit TokenReceived(msg.sender, _tokenAddress, _amount);
     }
 
@@ -29,4 +27,3 @@ contract ItemizedBudget {
     }
 
 }
-
