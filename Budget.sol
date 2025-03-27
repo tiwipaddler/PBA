@@ -1,18 +1,41 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+interface IERC20 {
+    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
+}
+
 contract ItemizedBudget {
     
     event FundsReceived(address sender, uint256 amount);
+    event TokenReceived(address sender, address token, uint256 amount);
 
+    
     receive() external payable {
         emit FundsReceived(msg.sender, msg.value);
     }
 
+    
     fallback() external payable {
         emit FundsReceived(msg.sender, msg.value);
     }
+
+    
+    function receiveToken(address _tokenAddress, uint256 _amount) external {
+        IERC20 token = IERC20(_tokenAddress);
+        require(token.transferFrom(msg.sender, address(this), _amount), "Token transfer failed");
+        emit TokenReceived(msg.sender, _tokenAddress, _amount);
+    }
+
+    
     function getBalance() external view returns (uint256) {
         return address(this).balance;
     }
-} 
+
+    
+    function getTokenBalance(address _tokenAddress) external view returns (uint256) {
+        IERC20 token = IERC20(_tokenAddress);
+        return token.balanceOf(address(this));
+    }
+}
+
